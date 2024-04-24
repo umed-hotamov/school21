@@ -1,7 +1,7 @@
 ## About The Project
 
 Development of Bash text utilities: cat, grep.
-Read 'src/Task.md' to get closer look at the project.
+Read `src/Task.md` to get closer look at the project.
 
 ## Installation
 
@@ -36,5 +36,5 @@ s21_cat [OPTION]... [FILE]...
 Grep:
 
 ```sh
-grep [OPTION...] PATTERNS [FILE...]
+s21_grep [OPTION...] PATTERNS [FILE...]
 ```
