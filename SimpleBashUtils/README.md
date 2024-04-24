@@ -1,7 +1,7 @@
 ## About The Project
 
 Development of Bash text utilities: cat, grep.
-Read `src/Task.md` to get closer look at the project.
+Read `src/Task.md` to get closer with the project.
 
 ## Installation
 
