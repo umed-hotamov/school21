@@ -1,17 +1,11 @@
 CC = gcc
-CFLAGS = -std=gnu11 -Wall -Werror -pedantic -Wextra
+CFLAGS = -std=gnu11 -Wall -Werror -pedantic -Wextra --coverage
 
 CAT =  s21_cat.c
 
 CAT_OBJ = s21_cat.o
 
-COVERAGE ?= 0
-
-ifeq ($(COVERAGE), 1)
-	CFLAGS += --coverage
-endif
-
-all: s21_cat
+all: s21_cat run_tests clean
 
 s21_cat: $(CAT_OBJ)
 	$(CC) $(CFLAGS) -o $@ $^

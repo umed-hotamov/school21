@@ -5,13 +5,7 @@ GREP =  s21_grep.c
 
 GREP_OBJ = s21_grep.o
 
-COVERAGE ?= 0
-
-ifeq ($(COVERAGE), 1)
-	CFLAGS += --coverage
-endif
-
-all: s21_grep
+all: s21_grep run_tests clean
 
 s21_grep: $(GREP_OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
