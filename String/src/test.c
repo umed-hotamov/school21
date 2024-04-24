@@ -19,7 +19,7 @@ static void test_s21_memchr(void) {
 
   {
     const char str[] = "Hello, World!";
-    int c = 'z';  // Character not present in the string
+    int c = 'z'; // Character not present in the string
     s21_size_t n = 13;
 
     void *result = s21_memchr(str, c, n);
@@ -356,7 +356,7 @@ static void test_s21_strrchr(void) {
   }
   {
     const char str[] = "Hello, World!";
-    int c = 'z';  // Character not present in the string
+    int c = 'z'; // Character not present in the string
 
     char *result = s21_strrchr(str, c);
     char *expected = strrchr(str, c);
@@ -626,7 +626,7 @@ static void test_s21_strerror() {
   }
 
   {
-    int errnum = 0;  // No error
+    int errnum = 0; // No error
     const char *result = s21_strerror(errnum);
     const char *expected = strerror(errnum);
 
@@ -1014,7 +1014,7 @@ static void test_sprintf(void) {
   const char *str = "Hello";
   result = s21_sprintf(buffer, "%x %p %% %#010Xabc", 15, str, 15);
   expected = sprintf(test_buffer, "%x %p %% %#010Xabc", 15, str, 15);
-  
+
   TEST_CHECK(result == expected);
   if (result == expected) {
     TEST_CHECK(strcmp(buffer, test_buffer) == 0);
@@ -1028,14 +1028,26 @@ static void test_sprintf(void) {
     TEST_CHECK(strcmp(buffer, test_buffer) == 0);
   }
 
-#define TCASE(_name) \
-  { #_name, _name }
+#define TCASE(_name) {#_name, _name}
 
-TEST_LIST = {
-    TCASE(test_s21_memchr),  TCASE(test_s21_memcmp),  TCASE(test_s21_memset),
-    TCASE(test_s21_strncat), TCASE(test_s21_strncmp), TCASE(test_s21_strncpy),
-    TCASE(test_s21_strtok),  TCASE(test_s21_strrchr), TCASE(test_s21_strpbrk),
-    TCASE(test_s21_memcpy),  TCASE(test_s21_strstr),  TCASE(test_s21_strerror),
-    TCASE(test_s21_strcspn), TCASE(test_s21_strlen),  TCASE(test_s21_strchr),
-    TCASE(test_to_upper),    TCASE(test_to_lower),    TCASE(test_trim),
-    TCASE(test_insert),      TCASE(test_sprintf),     {NULL, NULL}};
+  TEST_LIST = {TCASE(test_s21_memchr),
+               TCASE(test_s21_memcmp),
+               TCASE(test_s21_memset),
+               TCASE(test_s21_strncat),
+               TCASE(test_s21_strncmp),
+               TCASE(test_s21_strncpy),
+               TCASE(test_s21_strtok),
+               TCASE(test_s21_strrchr),
+               TCASE(test_s21_strpbrk),
+               TCASE(test_s21_memcpy),
+               TCASE(test_s21_strstr),
+               TCASE(test_s21_strerror),
+               TCASE(test_s21_strcspn),
+               TCASE(test_s21_strlen),
+               TCASE(test_s21_strchr),
+               TCASE(test_to_upper),
+               TCASE(test_to_lower),
+               TCASE(test_trim),
+               TCASE(test_insert),
+               TCASE(test_sprintf),
+               {NULL, NULL}};

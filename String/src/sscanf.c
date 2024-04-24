@@ -12,9 +12,11 @@ int s21_sscanf(const char *str, const char *fmt, ...) {
 static char *strint(const char *str, int *value, int width, int base) {
   char *lookup = (char *)str;
   int tmp = 0;
-  while (!isdigit(*lookup) && *lookup) ++lookup;
+  while (!isdigit(*lookup) && *lookup)
+    ++lookup;
 
-  if (!*lookup) return NULL;
+  if (!*lookup)
+    return NULL;
 
   int is_negative = 0;
   if (*lookup != *str) {
@@ -27,11 +29,13 @@ static char *strint(const char *str, int *value, int width, int base) {
     tmp = tmp * base + (*lookup - '0');
     ++lookup;
     width = width > 0 ? width - 1 : -1;
-    if (!width) break;
+    if (!width)
+      break;
 
   } while (isdigit(*lookup));
 
-  if (is_negative) tmp = -tmp;
+  if (is_negative)
+    tmp = -tmp;
 
   *value = tmp;
 
@@ -41,7 +45,8 @@ static char *strint(const char *str, int *value, int width, int base) {
 static char *strc(const char *str, char *ch) {
   char *lookup = (char *)str;
   int c;
-  if (isascii(*lookup)) c = *lookup;
+  if (isascii(*lookup))
+    c = *lookup;
 
   *ch = c;
 
@@ -62,9 +67,11 @@ static char *struint(const char *str, unsigned int *value, int width,
 static char *strhex(const char *str, unsigned int *value, int width) {
   char *lookup = (char *)str;
 
-  while (!isxdigit(*lookup) && *lookup) ++lookup;
+  while (!isxdigit(*lookup) && *lookup)
+    ++lookup;
 
-  if (!*lookup) return NULL;
+  if (!*lookup)
+    return NULL;
 
   int len = 0;
   char ch;
@@ -72,10 +79,12 @@ static char *strhex(const char *str, unsigned int *value, int width) {
     ++lookup;
     ++len;
     width = width > 0 ? width - 1 : -1;
-    if (!width) break;
+    if (!width)
+      break;
   } while (isxdigit(*lookup));
 
-  if (!isxdigit(*lookup)) --lookup;
+  if (!isxdigit(*lookup))
+    --lookup;
 
   char *end = lookup;
   uintmax_t hex = 0;
@@ -84,32 +93,32 @@ static char *strhex(const char *str, unsigned int *value, int width) {
 
   while (len--) {
     switch (*end) {
-      case 'a':
-      case 'A':
-        ind = 10;
-        break;
-      case 'b':
-      case 'B':
-        ind = 11;
-        break;
-      case 'c':
-      case 'C':
-        ind = 12;
-        break;
-      case 'd':
-      case 'D':
-        ind = 13;
-        break;
-      case 'e':
-      case 'E':
-        ind = 14;
-        break;
-      case 'f':
-      case 'F':
-        ind = 15;
-        break;
-      default:
-        ind = *end - 0x30;
+    case 'a':
+    case 'A':
+      ind = 10;
+      break;
+    case 'b':
+    case 'B':
+      ind = 11;
+      break;
+    case 'c':
+    case 'C':
+      ind = 12;
+      break;
+    case 'd':
+    case 'D':
+      ind = 13;
+      break;
+    case 'e':
+    case 'E':
+      ind = 14;
+      break;
+    case 'f':
+    case 'F':
+      ind = 15;
+      break;
+    default:
+      ind = *end - 0x30;
     }
     hex += ind * digit;
     digit *= 16;
@@ -137,24 +146,28 @@ static char *strfloat(const char *str, float *value, int width) {
     mantissa += 10;
     ++lookup;
     width = width > 0 ? width - 1 : -1;
-    if (!width) break;
+    if (!width)
+      break;
   }
 
   if (*lookup == '.') {
     ++lookup;
-    if (!isdigit(*lookup)) mantissa = 1;
+    if (!isdigit(*lookup))
+      mantissa = 1;
 
     while (isdigit(*lookup) && *lookup) {
       tmp = tmp * 10 + (*lookup - '0');
       ++lookup;
       width = width > 0 ? width - 1 : -1;
-      if (!width) break;
+      if (!width)
+        break;
     }
   } else {
     mantissa = 1;
   }
   if (tmp) {
-    if (is_negative) tmp = -tmp;
+    if (is_negative)
+      tmp = -tmp;
     *value = (float)tmp / mantissa;
   } else {
     *value = 0;
@@ -174,7 +187,8 @@ int s21_vsscanf(const char *str, const char *fmt, va_list args) {
     while (*fmt != '%' && *fmt) {
       ++fmt;
     }
-    if (!*fmt) break;
+    if (!*fmt)
+      break;
     ++fmt;
 
     int base = 10;
@@ -186,44 +200,45 @@ int s21_vsscanf(const char *str, const char *fmt, va_list args) {
         ++fmt;
       } while (isdigit(*fmt));
     }
-    if (*fmt == '*') continue;
+    if (*fmt == '*')
+      continue;
 
     switch (*fmt) {
-      case 'd':
-        tmp_str = strint(tmp_str, va_arg(args, int *), width, base);
-        ++fmt;
-        ++count;
-        break;
-      case 'u':
-      case 'o':
-        if (*fmt == 'o') {
-          base = 8;
-        }
-        tmp_str = struint(tmp_str, va_arg(args, unsigned int *), width, base);
-        ++fmt;
-        ++count;
-        break;
-      case 'x':
-      case 'X':
-        tmp_str = strhex(tmp_str, va_arg(args, unsigned int *), width);
-        ++fmt;
-        ++count;
-        break;
-      case 'c':
-        tmp_str = strc(tmp_str, va_arg(args, char *));
-        ++fmt;
-        ++count;
-        break;
-      case 's':
-        tmp_str = strs(tmp_str, va_arg(args, char *), width);
-        ++fmt;
-        ++count;
-        break;
-      case 'f':
-        tmp_str = strfloat(tmp_str, va_arg(args, float *), width);
-        ++fmt;
-        ++count;
-        break;
+    case 'd':
+      tmp_str = strint(tmp_str, va_arg(args, int *), width, base);
+      ++fmt;
+      ++count;
+      break;
+    case 'u':
+    case 'o':
+      if (*fmt == 'o') {
+        base = 8;
+      }
+      tmp_str = struint(tmp_str, va_arg(args, unsigned int *), width, base);
+      ++fmt;
+      ++count;
+      break;
+    case 'x':
+    case 'X':
+      tmp_str = strhex(tmp_str, va_arg(args, unsigned int *), width);
+      ++fmt;
+      ++count;
+      break;
+    case 'c':
+      tmp_str = strc(tmp_str, va_arg(args, char *));
+      ++fmt;
+      ++count;
+      break;
+    case 's':
+      tmp_str = strs(tmp_str, va_arg(args, char *), width);
+      ++fmt;
+      ++count;
+      break;
+    case 'f':
+      tmp_str = strfloat(tmp_str, va_arg(args, float *), width);
+      ++fmt;
+      ++count;
+      break;
     }
   }
 

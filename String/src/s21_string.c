@@ -6,7 +6,8 @@
 void *s21_memchr(const void *str, int c, s21_size_t n) {
   const unsigned char *p = str;
   while (n-- && *p) {
-    if (*p++ == (unsigned char)c) return (void *)p - 1;
+    if (*p++ == (unsigned char)c)
+      return (void *)p - 1;
   }
 
   return s21_NULL;
@@ -19,7 +20,8 @@ int s21_memcmp(const void *str1, const void *str2, s21_size_t n) {
   int diff = 0;
   while (n-- && *p1 && *p2) {
     diff = *p1 - *p2;
-    if (*p1++ != *p2++) break;
+    if (*p1++ != *p2++)
+      break;
   }
 
   return diff;
@@ -38,7 +40,8 @@ void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
 
 void *s21_memset(void *str, int c, s21_size_t n) {
   unsigned char *s = str;
-  while (n--) *s++ = c;
+  while (n--)
+    *s++ = c;
 
   return str;
 }
@@ -58,7 +61,8 @@ char *s21_strncpy(char *dest, const char *src, s21_size_t n) {
 char *s21_strncat(char *dest, const char *src, s21_size_t n) {
   char *tmp = dest;
   if (n) {
-    while (*dest) ++dest;
+    while (*dest)
+      ++dest;
     s21_strncpy(dest, src, n);
   }
 
@@ -75,7 +79,8 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     if (c1 != c2) {
       return c1 - c2;
     }
-    if (!c1) break;
+    if (!c1)
+      break;
   }
 
   return 0;
@@ -91,7 +96,8 @@ s21_size_t s21_strlen(const char *str) {
 
 char *s21_strchr(const char *str, int ch) {
   for (; *str != (char)ch; ++str) {
-    if (!*str) return s21_NULL;
+    if (!*str)
+      return s21_NULL;
   }
 
   return (char *)str;
@@ -101,7 +107,8 @@ s21_size_t s21_strcspn(const char *str1, const char *str2) {
   const char *p;
 
   for (p = str1; *p; ++p) {
-    if (strchr(str2, *p)) break;
+    if (strchr(str2, *p))
+      break;
   }
 
   return p - str1;
@@ -151,7 +158,8 @@ char *s21_strpbrk(const char *str1, const char *str2) {
 char *s21_strrchr(const char *str, int c) {
   char *end = (char *)str + s21_strlen(str);
   do {
-    if (*end == c) return end;
+    if (*end == c)
+      return end;
   } while (*end-- != *str);
 
   return s21_NULL;
@@ -159,7 +167,8 @@ char *s21_strrchr(const char *str, int c) {
 
 char *s21_strstr(const char *haystack, const char *needle) {
   s21_size_t test_len = s21_strlen(needle);
-  if (!test_len) return (char *)haystack;
+  if (!test_len)
+    return (char *)haystack;
 
   char *start = s21_strchr(haystack, *needle);
   if (start) {
@@ -175,7 +184,8 @@ char *s21_strstr(const char *haystack, const char *needle) {
 
 static int is_delim(char c, char *delim) {
   while (*delim != '\0') {
-    if (c == *delim) return 1;
+    if (c == *delim)
+      return 1;
     delim++;
   }
   return 0;
@@ -215,13 +225,15 @@ char *s21_strtok(char *src, char *delim) {
 }
 
 char *to_upper(const char *str) {
-  if (!str) return s21_NULL;
+  if (!str)
+    return s21_NULL;
 
   s21_size_t len = s21_strlen(str);
   char *upper_str = malloc(len + 1);
   s21_size_t new_len = 0;
   if (upper_str) {
-    while (*str) upper_str[new_len++] = toupper(*str++);
+    while (*str)
+      upper_str[new_len++] = toupper(*str++);
   }
   upper_str[new_len] = '\0';
 
@@ -229,13 +241,15 @@ char *to_upper(const char *str) {
 }
 
 char *to_lower(const char *str) {
-  if (!str) return s21_NULL;
+  if (!str)
+    return s21_NULL;
 
   s21_size_t len = s21_strlen(str);
   char *lower_str = malloc(len + 1);
   s21_size_t new_len = 0;
   if (lower_str) {
-    while (*str) lower_str[new_len++] = tolower(*str++);
+    while (*str)
+      lower_str[new_len++] = tolower(*str++);
   }
   lower_str[new_len] = '\0';
 
@@ -243,7 +257,8 @@ char *to_lower(const char *str) {
 }
 
 char *insert(const char *src, const char *str, s21_size_t start_index) {
-  if (!src || !str) return s21_NULL;
+  if (!src || !str)
+    return s21_NULL;
 
   s21_size_t src_len = s21_strlen(src);
   s21_size_t str_len = s21_strlen(str);
@@ -251,9 +266,12 @@ char *insert(const char *src, const char *str, s21_size_t start_index) {
   s21_size_t new_len = 0;
   char *new_str = malloc(src_len + str_len + 1);
   if (new_str) {
-    while (new_len != start_index) new_str[new_len++] = *src++;
-    while (*str) new_str[new_len++] = *str++;
-    while (*src) new_str[new_len++] = *src++;
+    while (new_len != start_index)
+      new_str[new_len++] = *src++;
+    while (*str)
+      new_str[new_len++] = *str++;
+    while (*src)
+      new_str[new_len++] = *src++;
   }
   new_str[new_len] = '\0';
 
@@ -272,7 +290,8 @@ static void do_trim(char *trimmed, const char *src, int trim_ch) {
 }
 
 char *trim(const char *src, const char *trim_chars) {
-  if (!src || !trim_chars) return s21_NULL;
+  if (!src || !trim_chars)
+    return s21_NULL;
 
   s21_size_t occur = 0;
   char *scan = s21_strpbrk(src, trim_chars);
@@ -287,7 +306,8 @@ char *trim(const char *src, const char *trim_chars) {
   if (occur) {
     trimmed = malloc(len + 1);
     if (trimmed) {
-      while (*trim_chars) do_trim(trimmed, src, *trim_chars++);
+      while (*trim_chars)
+        do_trim(trimmed, src, *trim_chars++);
     }
   }
   trimmed[len] = '\0';
@@ -327,13 +347,15 @@ char *s21_ftoa(double number, char *buffer, int precision) {
       0.5,       0.05,       0.005,       0.0005,       0.00005,      0.000005,
       0.0000005, 0.00000005, 0.000000005, 0.0000000005, 0.00000000005};
 
-  if (precision > MAX_PRECISION) precision = MAX_PRECISION;
+  if (precision > MAX_PRECISION)
+    precision = MAX_PRECISION;
 
   if (number < 0) {
     s21_strncpy(buffer, "-", 1);
     number = -number;
   }
-  if (precision) number += rounders[precision];
+  if (precision)
+    number += rounders[precision];
 
   int int_part = number;
   double prec_part = number - int_part;
@@ -343,7 +365,8 @@ char *s21_ftoa(double number, char *buffer, int precision) {
   s21_strncpy(buffer, intp_buffer, s21_strlen(intp_buffer));
 
   s21_size_t curr = s21_strlen(buffer);
-  if (precision) buffer[curr++] = '.';
+  if (precision)
+    buffer[curr++] = '.';
   while (precision--) {
     prec_part *= 10;
     char c = prec_part;

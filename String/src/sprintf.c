@@ -56,7 +56,8 @@ static void put_signed(char *buffer, s21_size_t *size, intmax_t number,
   }
 
   if (opts->is_left_padding && opts->width > 0) {
-    if (opts->padding_sign == '0') opts->padding_sign = ' ';
+    if (opts->padding_sign == '0')
+      opts->padding_sign = ' ';
     while (opts->width--) {
       put(buffer, tmp_size++, opts->padding_sign);
     }
@@ -101,7 +102,8 @@ static void put_unsigned(char *buffer, s21_size_t *size, uintmax_t number,
         opts->is_upper_prefix ? toupper(number_buffer[i]) : number_buffer[i]);
   }
   if (opts->is_left_padding && opts->width > 0) {
-    if (opts->padding_sign == '0') opts->padding_sign = ' ';
+    if (opts->padding_sign == '0')
+      opts->padding_sign = ' ';
     while (opts->width--) {
       put(buffer, tmp_size++, opts->padding_sign);
     }
@@ -143,9 +145,11 @@ static void put_double(char *buffer, s21_size_t *size, double number,
 
   int precision = DEFAULT_FPREC_WIDTH;
 
-  if (opts->precision) precision = opts->precision;
+  if (opts->precision)
+    precision = opts->precision;
 
-  if (opts->has_precision && !opts->precision) precision = 0;
+  if (opts->has_precision && !opts->precision)
+    precision = 0;
 
   s21_ftoa(number, number_buffer, precision);
   s21_size_t num_len = s21_strlen(number_buffer);
@@ -166,7 +170,8 @@ static void put_double(char *buffer, s21_size_t *size, double number,
     put(buffer, tmp_size++, number_buffer[i]);
   }
   if (opts->is_left_padding && opts->width > 0) {
-    if (opts->padding_sign == '0') opts->padding_sign = ' ';
+    if (opts->padding_sign == '0')
+      opts->padding_sign = ' ';
     while (opts->width--) {
       put(buffer, tmp_size++, opts->padding_sign);
     }
@@ -187,7 +192,8 @@ static int s21_vsprintf(char *buffer, const char *fmt, va_list args) {
     while (*fmt != '%' && *fmt) {
       put(buffer, size++, *fmt++);
     }
-    if (!*fmt) break;
+    if (!*fmt)
+      break;
     ++fmt;
 
     struct print_opts opts = {0};
@@ -236,67 +242,73 @@ static int s21_vsprintf(char *buffer, const char *fmt, va_list args) {
       }
     }
     switch (*fmt) {
-      case 'l':
-      case 'L':
-      case 'h':
-        ++fmt;
-        switch (*fmt) {
-          case 'u':
-          case 'o':
-          case 'x':
-          case 'X':
-            if (*fmt == 'o') opts.base = 8;
-            if (*fmt == 'x' || *fmt == 'X' || *fmt == 'p') opts.base = 16;
-            if (*fmt == 'X') opts.is_upper_prefix = 1;
-            put_unsigned(buffer, &size, va_arg(args, unsigned int), &opts);
-            ++fmt;
-            break;
-          case 'd':
-            put_signed(buffer, &size, va_arg(args, int), &opts);
-            ++fmt;
-            break;
-          case 'f':
-            put_double(buffer, &size, va_arg(args, double), &opts);
-            ++fmt;
-            break;
-        }
-        break;
+    case 'l':
+    case 'L':
+    case 'h':
+      ++fmt;
+      switch (*fmt) {
       case 'u':
       case 'o':
       case 'x':
       case 'X':
-        if (*fmt == 'o') opts.base = 8;
-        if (*fmt == 'x' || *fmt == 'X' || *fmt == 'p') opts.base = 16;
-        if (*fmt == 'X') opts.is_upper_prefix = 1;
+        if (*fmt == 'o')
+          opts.base = 8;
+        if (*fmt == 'x' || *fmt == 'X' || *fmt == 'p')
+          opts.base = 16;
+        if (*fmt == 'X')
+          opts.is_upper_prefix = 1;
         put_unsigned(buffer, &size, va_arg(args, unsigned int), &opts);
-        ++fmt;
-        break;
-      case 'p':
-        opts.is_prefix = 1;
-        opts.base = 16;
-        put_unsigned(buffer, &size, (uintptr_t)va_arg(args, void *), &opts);
         ++fmt;
         break;
       case 'd':
         put_signed(buffer, &size, va_arg(args, int), &opts);
         ++fmt;
         break;
-      case 'c':
-        put(buffer, size++, (char)va_arg(args, int));
-        ++fmt;
-        break;
-      case 's':
-        put_string(buffer, &size, va_arg(args, char *), &opts);
-        ++fmt;
-        break;
       case 'f':
         put_double(buffer, &size, va_arg(args, double), &opts);
         ++fmt;
         break;
-      case '%':
-        put(buffer, size++, '%');
-        ++fmt;
-        break;
+      }
+      break;
+    case 'u':
+    case 'o':
+    case 'x':
+    case 'X':
+      if (*fmt == 'o')
+        opts.base = 8;
+      if (*fmt == 'x' || *fmt == 'X' || *fmt == 'p')
+        opts.base = 16;
+      if (*fmt == 'X')
+        opts.is_upper_prefix = 1;
+      put_unsigned(buffer, &size, va_arg(args, unsigned int), &opts);
+      ++fmt;
+      break;
+    case 'p':
+      opts.is_prefix = 1;
+      opts.base = 16;
+      put_unsigned(buffer, &size, (uintptr_t)va_arg(args, void *), &opts);
+      ++fmt;
+      break;
+    case 'd':
+      put_signed(buffer, &size, va_arg(args, int), &opts);
+      ++fmt;
+      break;
+    case 'c':
+      put(buffer, size++, (char)va_arg(args, int));
+      ++fmt;
+      break;
+    case 's':
+      put_string(buffer, &size, va_arg(args, char *), &opts);
+      ++fmt;
+      break;
+    case 'f':
+      put_double(buffer, &size, va_arg(args, double), &opts);
+      ++fmt;
+      break;
+    case '%':
+      put(buffer, size++, '%');
+      ++fmt;
+      break;
     }
   }
   buffer[size] = '\0';
