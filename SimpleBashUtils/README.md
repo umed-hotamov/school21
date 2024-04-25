@@ -7,6 +7,7 @@ Read `src/Task.md` to get closer with the project.
 
 ```sh
     git clone git@github.com:umed-hotamov/school21.git
+    cd SimpleBashUtils    
 ```
 
 ## Running The Tests
