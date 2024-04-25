@@ -1,5 +1,7 @@
 #include "s21_string.h"
 
+static int s21_vsscanf(const char *str, const char *fmt, va_list args);
+
 int s21_sscanf(const char *str, const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
@@ -180,7 +182,7 @@ static char *strs(const char *str, char *strarg, int width) {
   return s21_strncpy(strarg, str, width ? width : s21_strlen(str));
 }
 
-int s21_vsscanf(const char *str, const char *fmt, va_list args) {
+static int s21_vsscanf(const char *str, const char *fmt, va_list args) {
   char *tmp_str = (char *)str;
   s21_size_t count = 0;
   while (*fmt && *tmp_str) {

@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS= -std=c11 -Isrc
+CFLAGS= -std=gnu11 -Isrc
 GCOV_FLAGS=--coverage -L. -fprofile-arcs -ftest-coverage 
 
 SRC=src
